@@ -5,6 +5,7 @@ import 'package:noticias_app/services/news_service.dart';
 import 'package:noticias_app/theme/theme_app.dart';
 import 'package:provider/provider.dart';
 
+
 void main() => runApp(const AppState());
 
 class AppState extends StatelessWidget {
@@ -14,7 +15,7 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => NewsService(),)
+        ChangeNotifierProvider(create: (context) => NewsService(),),
       ],
       child: const MyApp(),
     );

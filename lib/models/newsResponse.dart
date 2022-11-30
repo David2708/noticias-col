@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final newsResponse = newsResponseFromMap(jsonString);
 
 import 'dart:convert';
 

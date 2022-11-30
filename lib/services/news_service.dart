@@ -33,10 +33,7 @@ class NewsService extends ChangeNotifier{
       mapCategoriesArticles[item.nameUs] = [];
      }
 
-    print(mapCategoriesArticles);
-
     getArticlesByCategory( _selectedCategory );
-    print(mapCategoriesArticles);
   }
 
   String get selectedCategory => _selectedCategory;
@@ -53,7 +50,7 @@ class NewsService extends ChangeNotifier{
 
   get isloading => _isLoading;
 
-  getTopHeadLines() async {
+  getTopHeadLines( [bool refresh = false] ) async {
     final url = Uri.https( _baseUrl, 'v2/top-headlines',{
       'country' : _country,
       'apiKey' : _apikey,
@@ -62,19 +59,24 @@ class NewsService extends ChangeNotifier{
     final response = await http.get(url);
     final newResponse = NewsResponse.fromJson(response.body);
 
-    headlines.addAll(newResponse.articles);
+    if(refresh == false){
+      headlines.addAll(newResponse.articles);
+    }else{
+      headlines.clear();
+      headlines.addAll(newResponse.articles);
+    }
     
     _isLoading = false;
     notifyListeners();
   }
 
-  getArticlesByCategory( String category ) async {
+  getArticlesByCategory( String category, [ bool refresh = false] ) async {
 
-    if ( mapCategoriesArticles[category]!.isNotEmpty ) {
-        _isLoading = false;
-        notifyListeners();
-        return mapCategoriesArticles[category];
-      }
+    if ( mapCategoriesArticles[category]!.isNotEmpty && refresh == false ) {
+      _isLoading = false;
+      notifyListeners();
+      return mapCategoriesArticles[category];
+    }
 
     final url = Uri.https( _baseUrl, 'v2/top-headlines',{
       'country' : _country,
@@ -86,8 +88,12 @@ class NewsService extends ChangeNotifier{
 
     final newResponse =  NewsResponse.fromJson(response.body);
 
-    // mapCategoriesArticles.addAll({ category: newResponse.articles });
-    mapCategoriesArticles[category]!.addAll(newResponse.articles);
+    if(refresh == false){
+      mapCategoriesArticles[category]!.addAll(newResponse.articles);
+    } else{
+      mapCategoriesArticles[category] = [];
+      mapCategoriesArticles[category]!.addAll(newResponse.articles);
+    }
 
     _isLoading = false;
     notifyListeners();

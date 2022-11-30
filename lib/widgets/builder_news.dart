@@ -20,16 +20,13 @@ class BuilderNews extends StatelessWidget {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () { 
-          // final navigationModel = Provider.of<NavigationModel>(context);
+          final navigationModel = Provider.of<NavigationModel>(context, listen: false);
           final newServices = Provider.of<NewsService>(context, listen: false);
-          
-          return newServices.getTopHeadLines(); 
-          // if( navigationModel.paginaActual == 0 ){
-          //   print(navigationModel.paginaActual);
-          //   return newServices.getTopHeadLines();
-          // }
-          // print(navigationModel.paginaActual);
-          // return newServices.getArticulosCategoriaSelecionada;
+
+          if( navigationModel.paginaActual == 0 ){
+            return newServices.getTopHeadLines(true);
+          }
+          return newServices.getArticlesByCategory(newServices.selectedCategory, true);
          },
 
         child: ListView.builder(
@@ -86,7 +83,7 @@ class _Button extends StatelessWidget {
 
   final String url;
 
-  const _Button({super.key, required this.url});
+  const _Button({required this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -116,16 +113,14 @@ class _Image extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only( topLeft: Radius.circular(20), bottomRight: Radius.circular(20) )
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-        child: FadeInImage(
-          placeholder: const AssetImage('assets/giphy.gif'), 
-          image: NetworkImage(urlImage) 
-        ),
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+      child: FadeInImage(
+        height: 190,
+        width: double.infinity,
+        placeholder: const AssetImage('assets/giphy.gif'), 
+        image: NetworkImage(urlImage),
+        fit: BoxFit.cover,
       ),
     );
   }
@@ -135,7 +130,7 @@ class _Description extends StatelessWidget {
 
   final String? descripcion;
 
-  const _Description({ this.descripcion, super.key});
+  const _Description({ this.descripcion});
 
   @override
   Widget build(BuildContext context) {
