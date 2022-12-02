@@ -79,6 +79,7 @@ class _Category extends StatelessWidget {
     final seletedCategoria = Provider.of<NewsService>(context).selectedCategory;
 
     return GestureDetector(
+      
       onTap: () async {
               final newService = Provider.of<NewsService>(context, listen: false);
               newService.selectedCategory = category.nameUs;
@@ -93,6 +94,7 @@ class _Category extends StatelessWidget {
                 color: ( seletedCategoria == category.nameUs )
                         ? ThemeApp.primary
                         : Colors.grey.shade500,
+                
               )
           ),
           const SizedBox( height: 10 ),

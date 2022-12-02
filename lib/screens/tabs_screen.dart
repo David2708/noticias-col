@@ -70,7 +70,7 @@ class _Navegacion extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.public),
-          label: 'Encabezados'
+          label: 'Encabezados',
         )
       ],
 
